@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, Menu } = require('electron');
 
 require('@electron/remote/main').initialize();
 
@@ -6,6 +6,12 @@ const path = require('path');
 const isDev = require('electron-is-dev');
 
 function createWindow() {
+    const prodPreferens = !isDev
+        ? {
+              autoHideMenuBar: true,
+          }
+        : {};
+
     const win = new BrowserWindow({
         width: 800,
         height: 600,
@@ -13,6 +19,7 @@ function createWindow() {
             enableRemoteModule: true,
             nodeIntegration: true,
         },
+        ...prodPreferens,
     });
 
     win.loadURL(
