@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Form, InputNumber, Button, Radio, Image } from 'antd';
 import shema from '../../pictures/shema.jpg';
 import * as S from './styled';
@@ -31,48 +32,56 @@ export const Main = () => {
         form.resetFields();
     }, [form]);
 
+    //переделать на пункт меню функционал перехода на страницу добавления итемов
+
     return (
-        <S.Wrapper>
-            <S.FormWrapper>
-                <Form
-                    form={form}
-                    onFinish={onFinish}
-                    layout="vertical"
-                    initialValues={{ u: value }}
-                >
-                    <S.FormItem name="u" label="U Ип min">
-                        <Radio.Group onChange={onChange} value={value}>
-                            <Radio value={u12}>12</Radio>
-                            <Radio value={u24}>24</Radio>
-                        </Radio.Group>
-                    </S.FormItem>
-                    <S.FormItem name="i" label="Iсраб" rules={rules}>
-                        <InputNumber step="0.1" />
-                    </S.FormItem>
-                    <S.FormItem name="r1" label="R1" rules={rules}>
-                        <InputNumber step="0.01" />
-                    </S.FormItem>
-                    <S.FormItem name="r2" label="R2" rules={rules}>
-                        <InputNumber step="0.01" />
-                    </S.FormItem>
-                    <S.FormItem name="rAup" label="Rауп" rules={rules}>
-                        <InputNumber step="0.1" />
-                    </S.FormItem>
-                    <S.FormItem>
-                        <Button type="primary" htmlType="submit">
-                            Рассчитать
-                        </Button>
-                    </S.FormItem>
-                    <S.FormItem>
-                        <Button onClick={onReset}>Очистить</Button>
-                    </S.FormItem>
-                </Form>
-            </S.FormWrapper>
-            <S.Container>
-                <Image src={shema} />
-                <div>Rогр = {rd}</div>
-                <div>Wогр = {w}</div>
-            </S.Container>
-        </S.Wrapper>
+        <>
+            <Link to="/addItem">
+                <Button>Добавить</Button>
+            </Link>
+
+            <S.Wrapper>
+                <S.FormWrapper>
+                    <Form
+                        form={form}
+                        onFinish={onFinish}
+                        layout="vertical"
+                        initialValues={{ u: value }}
+                    >
+                        <S.FormItem name="u" label="U Ип min">
+                            <Radio.Group onChange={onChange} value={value}>
+                                <Radio value={u12}>12</Radio>
+                                <Radio value={u24}>24</Radio>
+                            </Radio.Group>
+                        </S.FormItem>
+                        <S.FormItem name="i" label="Iсраб" rules={rules}>
+                            <InputNumber step="0.1" />
+                        </S.FormItem>
+                        <S.FormItem name="r1" label="R1" rules={rules}>
+                            <InputNumber step="0.01" />
+                        </S.FormItem>
+                        <S.FormItem name="r2" label="R2" rules={rules}>
+                            <InputNumber step="0.01" />
+                        </S.FormItem>
+                        <S.FormItem name="rAup" label="Rауп" rules={rules}>
+                            <InputNumber step="0.1" />
+                        </S.FormItem>
+                        <S.FormItem>
+                            <Button type="primary" htmlType="submit">
+                                Рассчитать
+                            </Button>
+                        </S.FormItem>
+                        <S.FormItem>
+                            <Button onClick={onReset}>Очистить</Button>
+                        </S.FormItem>
+                    </Form>
+                </S.FormWrapper>
+                <S.Container>
+                    <Image src={shema} />
+                    <div>Rогр = {rd}</div>
+                    <div>Wогр = {w}</div>
+                </S.Container>
+            </S.Wrapper>
+        </>
     );
 };
