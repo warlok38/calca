@@ -63,7 +63,7 @@ export const AddItem = () => {
 
     return (
         <div>
-            <Link to="/addItem">
+            <Link to="/main">
                 <Button>На главную</Button>
             </Link>
             <div style={{ display: 'flex' }}>

@@ -2,18 +2,18 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 
 require('@electron/remote/main').initialize();
 
-const {
-    HANDLE_FETCH_DATA,
-    FETCH_DATA_FROM_STORAGE,
-    HANDLE_SAVE_DATA,
-    SAVE_DATA_IN_STORAGE,
-    REMOVE_DATA_FROM_STORAGE,
-    HANDLE_REMOVE_DATA,
-} = require('../src/utils/constants');
 const storage = require('electron-json-storage');
 
 const path = require('path');
 const isDev = require('electron-is-dev');
+
+//сюда нельзя заимпортить, поэтому дублируется из ./src/utils/constants.js
+const HANDLE_FETCH_DATA = 'handle-fetch-data';
+const FETCH_DATA_FROM_STORAGE = 'fetch-data-from-storage';
+const HANDLE_SAVE_DATA = 'handle-save-data';
+const SAVE_DATA_IN_STORAGE = 'save-data-in-storage';
+const HANDLE_REMOVE_DATA = 'handle-remove-data';
+const REMOVE_DATA_FROM_STORAGE = 'remove-data-from-storage';
 
 let loadingScreen;
 let itemsToTrack;
