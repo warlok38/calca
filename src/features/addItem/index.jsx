@@ -80,9 +80,6 @@ export const AddItem = () => {
 
     return (
         <div>
-            <Link to="/main">
-                <Button>На главную</Button>
-            </Link>
             <AddForm onSubmit={handlerSubmit} />
             <Table dataSource={list} columns={columns} />
             <Popconfirm

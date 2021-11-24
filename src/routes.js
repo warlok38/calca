@@ -6,10 +6,12 @@ export const routes = [
     {
         path: '/main',
         component: Main,
+        name: 'Главная',
     },
     {
         path: '/addItem',
         component: AddItem,
+        name: 'Добавить',
     },
     // {
     //     component: NoMatch,

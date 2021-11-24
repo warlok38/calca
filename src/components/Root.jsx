@@ -4,12 +4,14 @@ import { createBrowserHistory } from 'history';
 import { routes } from '../routes';
 import { Layout } from './Layout';
 import './style.css';
+import { Menu } from '../features/menu';
 
 export const Root = () => {
     return (
         // HashRouter нужен для того, чтобы на gh-pages все грузилось
         <HashRouter history={createBrowserHistory()}>
             <Layout>
+                <Menu />
                 <Switch>
                     <Route
                         path={'/'}

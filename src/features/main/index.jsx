@@ -60,9 +60,6 @@ export const Main = () => {
 
     return (
         <>
-            <Link to="/addItem">
-                <Button>Добавить</Button>
-            </Link>
             <S.Wrapper>
                 <S.FormWrapper>
                     <Form
@@ -71,8 +68,12 @@ export const Main = () => {
                         layout="vertical"
                         initialValues={initialValues}
                     >
-                        <S.FormItem name="filterByName">
+                        <S.FormItem
+                            label={<S.Label>Поиск</S.Label>}
+                            name="filterByName"
+                        >
                             <Select
+                                placeholder="Введите название"
                                 size="large"
                                 allowClear
                                 showSearch
@@ -90,23 +91,62 @@ export const Main = () => {
                                 ))}
                             </Select>
                         </S.FormItem>
-                        <S.FormItem name="u" label="U Ип min">
+                        <S.FormItem
+                            name="u"
+                            label={
+                                <S.Label>
+                                    U<S.LabelSuffix>ИПmin</S.LabelSuffix>
+                                </S.Label>
+                            }
+                        >
                             <Radio.Group onChange={onChange} value={value}>
                                 <Radio value={u12}>12</Radio>
                                 <Radio value={u24}>24</Radio>
                             </Radio.Group>
                         </S.FormItem>
-                        <S.FormItem name="i" label="Iсраб" rules={rules}>
-                            <InputNumber step="0.1" />
+                        <S.FormItem
+                            name="i"
+                            label={
+                                <S.Label>
+                                    I<S.LabelSuffix>сраб</S.LabelSuffix>
+                                </S.Label>
+                            }
+                            rules={rules}
+                        >
+                            <InputNumber step="0.1" placeholder="0.0" />
                         </S.FormItem>
-                        <S.FormItem name="r1" label="R1" rules={rules}>
-                            <InputNumber step="0.01" />
+                        <S.FormItem
+                            name="r1"
+                            label={
+                                <S.Label>
+                                    R<S.LabelSuffix>1</S.LabelSuffix>
+                                </S.Label>
+                            }
+                            rules={rules}
+                        >
+                            <InputNumber step="0.01" placeholder="0.00" />
                         </S.FormItem>
-                        <S.FormItem name="r2" label="R2" rules={rules}>
-                            <InputNumber step="0.01" />
+                        <S.FormItem
+                            name="r2"
+                            label={
+                                <S.Label>
+                                    R<S.LabelSuffix>2</S.LabelSuffix>
+                                </S.Label>
+                            }
+                            rules={rules}
+                        >
+                            <InputNumber step="0.01" placeholder="0.00" />
                         </S.FormItem>
-                        <S.FormItem name="rAup" label="Rауп" rules={rules}>
-                            <InputNumber step="0.1" />
+                        <S.FormItem
+                            name="rAup"
+                            label={
+                                <S.Label>
+                                    R<S.LabelSuffix>ауп</S.LabelSuffix>
+                                </S.Label>
+                            }
+                            rules={rules}
+                        >
+                            <InputNumber step="0.1" placeholder="0.0" />
                         </S.FormItem>
                         <S.FormItem>
                             <Button type="primary" htmlType="submit">
@@ -119,9 +159,15 @@ export const Main = () => {
                     </Form>
                 </S.FormWrapper>
                 <S.Container>
-                    <Image src={shema} />
-                    <div>Rогр = {rd}</div>
-                    <div>Wогр = {w}</div>
+                    <S.Image src={shema} />
+                    <S.RowResult>
+                        R<S.RowResultSuffix>огр</S.RowResultSuffix>&nbsp;=&nbsp;
+                        {rd}
+                    </S.RowResult>
+                    <S.RowResult>
+                        W<S.RowResultSuffix>огр</S.RowResultSuffix>&nbsp;=&nbsp;
+                        {w}
+                    </S.RowResult>
                 </S.Container>
             </S.Wrapper>
         </>
