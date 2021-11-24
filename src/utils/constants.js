@@ -5,4 +5,11 @@ module.exports = {
     SAVE_DATA_IN_STORAGE: 'save-data-in-storage',
     HANDLE_REMOVE_DATA: 'handle-remove-data',
     REMOVE_DATA_FROM_STORAGE: 'remove-data-from-storage',
+    FETCH_DATA: 'get-data-from-storage',
+    FETCH_DATA_HANDLER: 'fetch-data-handler',
+    SEND_DATA: 'send-data-to-storage',
+    SEND_DATA_HANDLER: 'send-data-handler',
+    DELETE_DATA: 'delete-data-from-storage',
+    DELETE_DATA_HANDLER: 'delete-data-handler',
+    DROP_DATABASE: 'drop-database',
 };

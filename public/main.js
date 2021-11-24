@@ -15,9 +15,21 @@ const SAVE_DATA_IN_STORAGE = 'save-data-in-storage';
 const HANDLE_REMOVE_DATA = 'handle-remove-data';
 const REMOVE_DATA_FROM_STORAGE = 'remove-data-from-storage';
 
+const FETCH_DATA = 'get-data-from-storage';
+const SEND_DATA = 'send-data-to-storage';
+const DELETE_DATA = 'delete-data-from-storage';
+
+const FETCH_DATA_HANDLER = 'fetch-data-handler';
+const SEND_DATA_HANDLER = 'send-data-handler';
+const DELETE_DATA_HANDLER = 'delete-data-handler';
+
+const DROP_DATABASE = 'drop-database';
+
 let loadingScreen;
 let itemsToTrack;
 let mainWindow;
+
+let dataList;
 
 const createLoadingScreen = () => {
     loadingScreen = new BrowserWindow(
@@ -99,10 +111,6 @@ app.on('activate', () => {
 
 // Receives a FETCH_DATA_FROM_STORAGE from renderer
 ipcMain.on(FETCH_DATA_FROM_STORAGE, (event, message) => {
-    console.log(
-        'Main received: FETCH_DATA_FROM_STORAGE with message:',
-        message
-    );
     // Get the user's itemsToTrack from storage
     // For our purposes, message = itemsToTrack array
     storage.get(message, (error, data) => {
@@ -125,13 +133,11 @@ ipcMain.on(FETCH_DATA_FROM_STORAGE, (event, message) => {
 
 // Receive a SAVE_DATA_IN_STORAGE call from renderer
 ipcMain.on(SAVE_DATA_IN_STORAGE, (event, message) => {
-    console.log('Main received: SAVE_DATA_IN_STORAGE');
     // update the itemsToTrack array.
     itemsToTrack.push(message);
     // Save itemsToTrack to storage
     storage.set('itemsToTrack', itemsToTrack, (error) => {
         if (error) {
-            console.log('We errored! What was data?');
             mainWindow.send(HANDLE_SAVE_DATA, {
                 success: false,
                 message: 'itemsToTrack not saved',
@@ -148,13 +154,11 @@ ipcMain.on(SAVE_DATA_IN_STORAGE, (event, message) => {
 
 // Receive a REMOVE_DATA_FROM_STORAGE call from renderer
 ipcMain.on(REMOVE_DATA_FROM_STORAGE, (event, message) => {
-    console.log('Main Received: REMOVE_DATA_FROM_STORAGE');
     // Update the items to Track array.
     itemsToTrack = itemsToTrack.filter((item) => item !== message);
     // Save itemsToTrack to storage
     storage.set('itemsToTrack', itemsToTrack, (error) => {
         if (error) {
-            console.log('We errored! What was data?');
             mainWindow.send(HANDLE_REMOVE_DATA, {
                 success: false,
                 message: 'itemsToTrack not saved',
@@ -167,4 +171,54 @@ ipcMain.on(REMOVE_DATA_FROM_STORAGE, (event, message) => {
             });
         }
     });
+});
+
+///////NEW/////NEW/////NEW/////////NEW////////////////
+
+ipcMain.on(FETCH_DATA, (event, list) => {
+    storage.get(list, (error, data) => {
+        dataList = JSON.stringify(data) === '{}' ? [] : data;
+        if (error) {
+            console.error('Error in FETCH_DATA. dataList: ', dataList);
+        } else {
+            console.log('FETCH_DATA data: ', dataList);
+            mainWindow.send(FETCH_DATA_HANDLER, {
+                success: true,
+                list: dataList,
+            });
+        }
+    });
+});
+
+ipcMain.on(SEND_DATA, (event, values) => {
+    dataList.push(values);
+    storage.set('dataList', dataList, (error) => {
+        if (error) {
+            console.error('Error in SEND_DATA. Values: ', values);
+        } else {
+            mainWindow.send(SEND_DATA_HANDLER, {
+                success: true,
+                list: values,
+            });
+        }
+    });
+});
+
+ipcMain.on(DELETE_DATA, (event, id) => {
+    dataList = dataList.filter((_, index) => index !== id);
+    storage.set('dataList', dataList, (error) => {
+        if (error) {
+            console.error('Error in SEND_DATA. id: ', id);
+        } else {
+            mainWindow.send(DELETE_DATA_HANDLER, {
+                success: true,
+                list: dataList,
+            });
+        }
+    });
+});
+
+ipcMain.on(DROP_DATABASE, (path) => {
+    storage.clear(path);
+    console.log('The database has been deleted');
 });
