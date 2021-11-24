@@ -8,13 +8,6 @@ const path = require('path');
 const isDev = require('electron-is-dev');
 
 //сюда нельзя заимпортить, поэтому дублируется из ./src/utils/constants.js
-const HANDLE_FETCH_DATA = 'handle-fetch-data';
-const FETCH_DATA_FROM_STORAGE = 'fetch-data-from-storage';
-const HANDLE_SAVE_DATA = 'handle-save-data';
-const SAVE_DATA_IN_STORAGE = 'save-data-in-storage';
-const HANDLE_REMOVE_DATA = 'handle-remove-data';
-const REMOVE_DATA_FROM_STORAGE = 'remove-data-from-storage';
-
 const FETCH_DATA = 'get-data-from-storage';
 const SEND_DATA = 'send-data-to-storage';
 const DELETE_DATA = 'delete-data-from-storage';
@@ -26,7 +19,6 @@ const DELETE_DATA_HANDLER = 'delete-data-handler';
 const DROP_DATABASE = 'drop-database';
 
 let loadingScreen;
-let itemsToTrack;
 let mainWindow;
 
 let dataList;
@@ -105,76 +97,7 @@ app.on('activate', () => {
     }
 });
 
-//////////////////////////////////////////////////////////////////////
-
-// ipcMain methods are how we interact between the window and (this) main program
-
-// Receives a FETCH_DATA_FROM_STORAGE from renderer
-ipcMain.on(FETCH_DATA_FROM_STORAGE, (event, message) => {
-    // Get the user's itemsToTrack from storage
-    // For our purposes, message = itemsToTrack array
-    storage.get(message, (error, data) => {
-        // if the itemsToTrack key does not yet exist in storage, data returns an empty object, so we will declare itemsToTrack to be an empty array
-        itemsToTrack = JSON.stringify(data) === '{}' ? [] : data;
-        if (error) {
-            mainWindow.send(HANDLE_FETCH_DATA, {
-                success: false,
-                message: 'itemsToTrack not returned',
-            });
-        } else {
-            // Send message back to window
-            mainWindow.send(HANDLE_FETCH_DATA, {
-                success: true,
-                message: itemsToTrack, // do something with the data
-            });
-        }
-    });
-});
-
-// Receive a SAVE_DATA_IN_STORAGE call from renderer
-ipcMain.on(SAVE_DATA_IN_STORAGE, (event, message) => {
-    // update the itemsToTrack array.
-    itemsToTrack.push(message);
-    // Save itemsToTrack to storage
-    storage.set('itemsToTrack', itemsToTrack, (error) => {
-        if (error) {
-            mainWindow.send(HANDLE_SAVE_DATA, {
-                success: false,
-                message: 'itemsToTrack not saved',
-            });
-        } else {
-            // Send message back to window as 2nd arg "data"
-            mainWindow.send(HANDLE_SAVE_DATA, {
-                success: true,
-                message: message,
-            });
-        }
-    });
-});
-
-// Receive a REMOVE_DATA_FROM_STORAGE call from renderer
-ipcMain.on(REMOVE_DATA_FROM_STORAGE, (event, message) => {
-    // Update the items to Track array.
-    itemsToTrack = itemsToTrack.filter((item) => item !== message);
-    // Save itemsToTrack to storage
-    storage.set('itemsToTrack', itemsToTrack, (error) => {
-        if (error) {
-            mainWindow.send(HANDLE_REMOVE_DATA, {
-                success: false,
-                message: 'itemsToTrack not saved',
-            });
-        } else {
-            // Send new updated array to window as 2nd arg "data"
-            mainWindow.send(HANDLE_REMOVE_DATA, {
-                success: true,
-                message: itemsToTrack,
-            });
-        }
-    });
-});
-
-///////NEW/////NEW/////NEW/////////NEW////////////////
-
+//storage logic connections
 ipcMain.on(FETCH_DATA, (event, list) => {
     storage.get(list, (error, data) => {
         dataList = JSON.stringify(data) === '{}' ? [] : data;
