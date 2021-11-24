@@ -13,6 +13,8 @@ export const MenuItem = styled.div`
     color: #1d1d1d;
     font-size: 14px;
     line-height: 16px;
+    border: none;
+    outline: none;
     :hover {
         filter: brightness(0.9);
     }

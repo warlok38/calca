@@ -3,21 +3,29 @@ import { Form as AntdForm, Image as AntdImage } from 'antd';
 
 export const Wrapper = styled.div`
     display: flex;
-    padding: 24px;
-    overflow: auto;
+    flex: 1;
+    padding: 16px;
 `;
 
 export const FormWrapper = styled.div`
+    padding: 16px;
     width: 30%;
     min-width: 200px;
+    background-color: #fff;
+    box-shadow: 0 0 10px 5px rgba(221, 221, 221, 0.5);
+    border-radius: 3px;
 `;
 
 export const Container = styled.div`
     display: flex;
+    flex: 1;
     flex-direction: column;
-    justify-content: center;
     margin-left: 24px;
+    padding: 16px;
     min-width: 500px;
+    background-color: #fff;
+    box-shadow: 0 0 10px 5px rgba(221, 221, 221, 0.5);
+    border-radius: 3px;
 `;
 
 export const FormItem = styled(AntdForm.Item)`
