@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Form, InputNumber, Button, Radio, Image } from 'antd';
+import { Form, InputNumber, Button, Radio, Image, Select } from 'antd';
 import shema from '../../pictures/shema.jpg';
 import * as S from './styled';
+import { getList } from '../addItem/rerenders';
+const { ipcRenderer } = require('electron');
+const { FETCH_DATA_HANDLER } = require('../../utils/constants');
 
 export const Main = () => {
     const u12 = 10;
@@ -13,6 +16,7 @@ export const Main = () => {
     const [value, setValue] = useState(u12);
     const [rd, setRd] = useState(0);
     const [w, setW] = useState(0);
+    const initialValues = { u: value };
 
     const onFinish = ({ u, i, r1, r2, rAup }) => {
         const rd = (u - 1) / i - (r2 + r1 + rAup);
@@ -31,23 +35,61 @@ export const Main = () => {
     useEffect(() => {
         form.resetFields();
     }, [form]);
+    ////////////
+    const [list, setList] = useState([]);
 
-    //переделать на пункт меню функционал перехода на страницу добавления итемов
+    useEffect(() => {
+        getList();
+    }, []);
+
+    useEffect(() => {
+        ipcRenderer.on(FETCH_DATA_HANDLER, setListHandler);
+        return () => {
+            ipcRenderer.removeListener(FETCH_DATA_HANDLER, setListHandler);
+        };
+    });
+    const setListHandler = (event, data) => {
+        setList([...data.list]);
+    };
+
+    const selectChangeHandler = (value) => {
+        const i = list?.find((_, index) => index === value)?.i;
+        const rAup = list?.find((_, index) => index === value)?.rAup;
+        form.setFieldsValue({ i, rAup });
+    };
 
     return (
         <>
             <Link to="/addItem">
                 <Button>Добавить</Button>
             </Link>
-
             <S.Wrapper>
                 <S.FormWrapper>
                     <Form
                         form={form}
                         onFinish={onFinish}
                         layout="vertical"
-                        initialValues={{ u: value }}
+                        initialValues={initialValues}
                     >
+                        <S.FormItem name="filterByName">
+                            <Select
+                                size="large"
+                                allowClear
+                                showSearch
+                                optionFilterProp="label"
+                                onChange={selectChangeHandler}
+                            >
+                                {list?.map(({ name }, index) => (
+                                    <Select.Option
+                                        key={index}
+                                        value={index}
+                                        label={name}
+                                    >
+                                        {name}
+                                    </Select.Option>
+                                ))}
+                            </Select>
+                        </S.FormItem>
                         <S.FormItem name="u" label="U Ип min">
                             <Radio.Group onChange={onChange} value={value}>
                                 <Radio value={u12}>12</Radio>
