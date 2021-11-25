@@ -31,12 +31,12 @@ const createLoadingScreen = () => {
             useContentSize: true,
             frame: false,
             movable: true,
+            focusable: true,
+            resizable: false,
+            transparent: true,
         })
     );
-    loadingScreen.setResizable(false);
-    loadingScreen.loadURL(
-        `file://${path.join(__dirname, '../src/components/Spin/index.html')}`
-    );
+    loadingScreen.loadURL(`file://${path.join(__dirname, './welcome.html')}`);
     loadingScreen.on('closed', () => (loadingScreen = null));
     loadingScreen.webContents.on('did-finish-load', () => {
         loadingScreen.show();
