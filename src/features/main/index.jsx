@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Form, InputNumber, Button, Radio, Image, Select } from 'antd';
+import { Form, InputNumber, Button, Radio, Select, message } from 'antd';
 import shema from '../../pictures/shema.jpg';
 import * as S from './styled';
 import { getList } from '../addItem/rerenders';
@@ -10,19 +9,47 @@ const { FETCH_DATA_HANDLER } = require('../../utils/constants');
 export const Main = () => {
     const u12 = 10;
     const u24 = 24;
-    const rules = [{ required: true }];
+    const rowE24 = [
+        0, 1, 1.1, 1.2, 1.3, 1.5, 1.6, 1.8, 2, 2.2, 2.4, 2.7, 3, 3.3, 3.6, 3.9,
+        4.3, 4.7, 5.1, 5.6, 6.2, 6.8, 7.5, 8.2, 9.1, 10, 11, 12, 13, 15, 16, 18,
+        20, 22, 24, 27, 30, 33, 36, 39, 43, 47, 51, 56, 62, 68, 75, 82, 91, 100,
+        110, 120, 130, 150, 160, 180, 200, 220, 240, 270, 300, 330, 360, 390,
+        430, 470, 510, 560, 620, 680, 750, 820, 910,
+    ];
+
+    const roundByRowE24 = (value) => {
+        let roundedValue;
+        for (let i = 0; i < rowE24.length; i++) {
+            if (value > rowE24[i]) {
+            } else if (value === rowE24[i]) {
+                roundedValue = rowE24[i];
+                break;
+            } else if (value < rowE24[i]) {
+                roundedValue = rowE24[i - 1];
+                break;
+            }
+        }
+        return roundedValue;
+    };
 
     const [form] = Form.useForm();
     const [value, setValue] = useState(u12);
     const [rd, setRd] = useState(0);
     const [w, setW] = useState(0);
     const initialValues = { u: value };
+    const rules = [{ required: true }];
 
     const onFinish = ({ u, i, r1, r2, rAup }) => {
         const rd = (u - 1) / i - (r2 + r1 + rAup);
-        const w = Math.pow(27 / (rAup + r1 + r2 + rd), 2) * rd;
-        setRd(rd);
-        setW(w);
+        const roundedRd =
+            rd < 1000 ? roundByRowE24(rd) : roundByRowE24(rd / 1000) * 1000;
+        const w = Math.pow(27 / (rAup + r1 + r2 + roundedRd), 2) * roundedRd;
+        if (typeof roundedRd === 'number') {
+            setRd(roundedRd);
+            setW(w);
+        } else {
+            message.error('Расчет невозможен');
+        }
         form.resetFields();
     };
     const onChange = (e) => {
@@ -35,7 +62,7 @@ export const Main = () => {
     useEffect(() => {
         form.resetFields();
     }, [form]);
-    ////////////
+
     const [list, setList] = useState([]);
 
     useEffect(() => {
