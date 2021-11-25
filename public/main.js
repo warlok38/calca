@@ -114,7 +114,7 @@ ipcMain.on(FETCH_DATA, (event, list) => {
 });
 
 ipcMain.on(SEND_DATA, (event, values) => {
-    dataList.push(values);
+    dataList.unshift(values);
     storage.set('dataList', dataList, (error) => {
         if (error) {
             console.error('Error in SEND_DATA. Values: ', values);
