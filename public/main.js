@@ -102,9 +102,7 @@ ipcMain.on(FETCH_DATA, (event, list) => {
     storage.get(list, (error, data) => {
         dataList = JSON.stringify(data) === '{}' ? [] : data;
         if (error) {
-            console.error('Error in FETCH_DATA. dataList: ', dataList);
         } else {
-            console.log('FETCH_DATA data: ', dataList);
             mainWindow.send(FETCH_DATA_HANDLER, {
                 success: true,
                 list: dataList,
@@ -143,5 +141,4 @@ ipcMain.on(DELETE_DATA, (event, id) => {
 
 ipcMain.on(DROP_DATABASE, (path) => {
     storage.clear(path);
-    console.log('The database has been deleted');
 });

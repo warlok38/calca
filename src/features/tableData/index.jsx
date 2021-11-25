@@ -23,7 +23,6 @@ export const TableData = () => {
         };
     });
     const setListHandler = (event, data) => {
-        console.log(data);
         setList([...data.list]);
     };
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Form, Input, InputNumber, Button } from 'antd';
 import * as S from './styled';
 

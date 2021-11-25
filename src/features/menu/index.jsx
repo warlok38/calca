@@ -10,7 +10,7 @@ export const Menu = () => {
     return (
         <S.Wrapper>
             {routes.map(({ name, path }, index) => (
-                <Link to={path}>
+                <Link to={path} key={index}>
                     <S.MenuItem
                         isActive={path === location.pathname}
                         tabIndex={index}
