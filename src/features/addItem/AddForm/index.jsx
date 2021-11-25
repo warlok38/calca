@@ -4,23 +4,13 @@ import * as S from './styled';
 
 export const AddForm = ({ onSubmit }) => {
     const [form] = Form.useForm();
-    const [isDisabed, setDisabled] = useState(true);
-
-    const valuesChangeHandler = () => {
-        const isButtonDisabled =
-            Object.values(form.getFieldsValue()).filter(
-                (key) => key !== undefined && key !== ''
-            ).length === 0;
-        setDisabled(isButtonDisabled);
-    };
+    const rules = [{ required: true }];
     const onFinish = (values) => {
         onSubmit && onSubmit(values);
         form.resetFields();
-        setDisabled(true);
     };
     const onReset = () => {
         form.resetFields();
-        setDisabled(true);
     };
 
     useEffect(() => {
@@ -36,36 +26,29 @@ export const AddForm = ({ onSubmit }) => {
                         onFinish={onFinish}
                         layout="vertical"
                         initialValues={{}}
-                        onValuesChange={valuesChangeHandler}
                     >
-                        <S.FormItem name="name" label="Название">
-                            <Input />
+                        <S.FormItem name="name" label="Название" rules={rules}>
+                            <Input placeholder="Название" />
                         </S.FormItem>
                         <S.FormItem name="i" label="Iсраб">
-                            <InputNumber step="0.1" />
+                            <InputNumber step="0.1" placeholder="0.0" />
                         </S.FormItem>
                         <S.FormItem name="rAup" label="Rауп">
-                            <InputNumber step="0.1" />
+                            <InputNumber step="0.1" placeholder="0.0" />
                         </S.FormItem>
-                        <S.FormItem
-                            label={
-                                isDisabed && (
-                                    <span style={{ color: 'darkred' }}>
-                                        Заполните хотя бы 1 элемент
-                                    </span>
-                                )
-                            }
-                        >
+                        <S.FormItem>
                             <Button
                                 type="primary"
                                 htmlType="submit"
-                                disabled={isDisabed}
+                                style={{ width: '100%' }}
                             >
                                 Добавить
                             </Button>
                         </S.FormItem>
                         <S.FormItem>
-                            <Button onClick={onReset}>Очистить</Button>
+                            <Button style={{ width: '100%' }} onClick={onReset}>
+                                Очистить
+                            </Button>
                         </S.FormItem>
                     </Form>
                 </S.FormWrapper>

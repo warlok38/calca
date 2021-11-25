@@ -2,11 +2,16 @@ import styled from 'styled-components';
 import { Form as AntdForm } from 'antd';
 
 export const Wrapper = styled.div`
-    padding: 24px;
+    padding: 16px;
     display: flex;
 `;
 
-export const FormWrapper = styled.div``;
+export const FormWrapper = styled.div`
+    padding: 16px;
+    background-color: #fff;
+    box-shadow: 0 0 10px 5px rgba(221, 221, 221, 0.5);
+    border-radius: 3px;
+`;
 
 export const Container = styled.div`
     display: flex;

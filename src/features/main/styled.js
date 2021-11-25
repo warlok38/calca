@@ -70,3 +70,8 @@ export const RowResultSuffix = styled(LabelSuffix)`
     font-size: 16px;
     line-height: 19px;
 `;
+
+export const RowResultNumber = styled.div`
+    overflow: hidden;
+    text-overflow: ellipsis;
+`;

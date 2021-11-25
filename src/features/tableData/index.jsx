@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { getList, deleteItem, dropDatabase } from '../addItem/rerenders';
 import { Button, Popconfirm, Table } from 'antd';
+import * as S from './styled';
+
 const { ipcRenderer } = require('electron');
 const {
     FETCH_DATA_HANDLER,
@@ -59,16 +61,25 @@ export const TableData = () => {
     };
 
     return (
-        <div>
-            <Table dataSource={list} columns={columns} />
-            <Popconfirm
-                title="Вы уверены, что хотите удалить все данные?"
-                onConfirm={confirmHandler}
-                okText="Да"
-                cancelText="Нет"
-            >
-                <Button type="primary">Удалить все данные</Button>
-            </Popconfirm>
-        </div>
+        <S.Wrapper>
+            <S.Container>
+                <Table
+                    dataSource={list}
+                    columns={columns}
+                    pagination={{ position: ['bottomCenter'] }}
+                />
+            </S.Container>
+            <S.ButtonContainer>
+                <Popconfirm
+                    title="Вы уверены? Это действие удалит ВСЕ данные в таблице"
+                    onConfirm={confirmHandler}
+                    okText="Да"
+                    cancelText="Нет"
+                    placement="topLeft"
+                >
+                    <Button type="primary">Удалить все данные</Button>
+                </Popconfirm>
+            </S.ButtonContainer>
+        </S.Wrapper>
     );
 };

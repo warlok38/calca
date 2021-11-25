@@ -162,11 +162,11 @@ export const Main = () => {
                     <S.Image src={shema} />
                     <S.RowResult>
                         R<S.RowResultSuffix>огр</S.RowResultSuffix>&nbsp;=&nbsp;
-                        {rd}
+                        <S.RowResultNumber title={rd}>{rd}</S.RowResultNumber>
                     </S.RowResult>
                     <S.RowResult>
                         W<S.RowResultSuffix>огр</S.RowResultSuffix>&nbsp;=&nbsp;
-                        {w}
+                        <S.RowResultNumber title={w}>{w}</S.RowResultNumber>
                     </S.RowResult>
                 </S.Container>
             </S.Wrapper>
