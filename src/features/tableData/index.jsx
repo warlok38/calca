@@ -36,7 +36,11 @@ export const TableData = () => {
 
     const columns = [
         {
-            title: 'Name',
+            title: '№',
+            render: (text, record, index) => index + 1,
+        },
+        {
+            title: 'Название',
             dataIndex: 'name',
         },
         {
